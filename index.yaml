@@ -3,7 +3,17 @@ entries:
   FileRise:
   - apiVersion: v2
     appVersion: 3.5.2
-    created: "2026-03-03T06:57:39.885711697-03:00"
+    created: "2026-03-05T03:27:17.613725328Z"
+    description: A Helm chart for deploying FileRise on Kubernetes
+    digest: b250512e131017afcf90ab652b231d8ff7fb7c29c6c0edc71af84aa77b086718
+    name: FileRise
+    type: application
+    urls:
+    - FileRise-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 3.5.2
+    created: "2026-03-05T03:27:17.613239998Z"
     description: A Helm chart for deploying FileRise on Kubernetes
     digest: 49bd730fdc0c548c547bd92c6cdbc9d1e6075a8a3c88eadcc4a8c1ba1f3b1ae4
     name: FileRise
@@ -11,4 +21,4 @@ entries:
     urls:
     - FileRise-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-03T06:57:39.882459239-03:00"
+generated: "2026-03-05T03:27:17.612076649Z"
