@@ -30,9 +30,13 @@ jobs:
         run: |
           mkdir -p packaged
           for chart in ./*; do
-            helm package $chart -d packaged
+            if [ -d "$chart" ] && [ -f "$chart/Chart.yaml" ]; then
+                helm package $chart -d packaged
+            fi
+          done
       - name: Push
         run: |
           cd packaged
-          for chart in `find ./ -name '*.tgz' -print`; do
+          for chart in ./*; do
             helm push $chart oci://ghcr.io/${{ github.repository }}
+          done
