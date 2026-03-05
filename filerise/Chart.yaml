@@ -1,0 +1,9 @@
+apiVersion: v2
+name: filerise
+description: A Helm chart for deploying FileRise on Kubernetes
+
+type: application
+
+version: 0.1.1
+
+appVersion: "3.5.2"

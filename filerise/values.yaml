@@ -1,0 +1,120 @@
+replicaCount: 1
+
+nameOverride: ""
+
+image:
+  repository: error311/filerise-docker
+  pullPolicy: IfNotPresent
+  tag: "v3.5.2"
+
+imagePullSecrets: []
+
+args: {}
+command: {}
+env:
+  TIMEZONE: "America/New_York"
+  TOTAL_UPLOAD_SIZE: "10G"
+  SECURE: "false"
+  PERSISTENT_TOKENS_KEY: "change_me"
+  SCAN_ON_START: "true"
+  CHOWN_ON_START: "true"
+  HTTP_PORT: "80"
+  # FR_BASE_PATH: "/files"
+  # FR_PUBLISHED_URL: "http://127.0.0.1/files"
+  # FR_TRUSTED_PROXIES: "10.0.0.0/8"
+
+serviceAccount:
+  create: false
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: ""
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+    - name: gateway
+      sectionName: http
+      # namespace: default
+  hostnames:
+    - ""
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+
+resources: {}
+
+livenessProbe: ""
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+volumes:
+  - name: uploads
+    persistentVolumeClaim:
+      claimName: filerise-uploads
+  - name: users
+    persistentVolumeClaim:
+      claimName: filerise-users
+  - name: metadata
+    persistentVolumeClaim:
+      claimName: filerise-metadata
+
+volumeMounts:
+  - name: uploads
+    mountPath: /var/www/uploads
+  - name: users
+    mountPath: /var/www/users
+  - name: metadata
+    mountPath: /var/www/metadata
+
+storage:
+  keep: true
+  storageClass: ""
+  metadata:
+    size: 1Gi
+  users:
+    size: 1Gi
+  uploads:
+    size: 5Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
