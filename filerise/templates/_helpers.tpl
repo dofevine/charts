@@ -14,6 +14,9 @@ If release name contains chart name it will be used as a full name.
 {{- .Release.Name }}
 {{- end }}
 
+{{- define "FileRise.uploadsPVCName" }}
+{{- printf "%s-uploads" .Release.Name }}
+{{- end -}}
 {{/*
 Create chart name and version as used by the chart label.
 */}}
