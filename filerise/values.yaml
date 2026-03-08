@@ -84,24 +84,10 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-volumes:
-  - name: uploads
-    persistentVolumeClaim:
-      claimName: filerise-uploads
-  - name: users
-    persistentVolumeClaim:
-      claimName: filerise-users
-  - name: metadata
-    persistentVolumeClaim:
-      claimName: filerise-metadata
+extraVolumes: []
 
-volumeMounts:
-  - name: uploads
-    mountPath: /var/www/uploads
-  - name: users
-    mountPath: /var/www/users
-  - name: metadata
-    mountPath: /var/www/metadata
+extraVolumeMounts: []
+
 
 storage:
   keep: true
@@ -111,6 +97,7 @@ storage:
   users:
     size: 1Gi
   uploads:
+    existingClaim: "teste-pvc"
     size: 5Gi
 
 nodeSelector: {}
