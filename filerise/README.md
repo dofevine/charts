@@ -55,8 +55,9 @@ Below are the main configurable parameters available in `values.yaml`.
 | `autoscaling.minReplicas` | Minimum replicas | `1` |
 | `autoscaling.maxReplicas` | Maximum replicas | `10` |
 | `autoscaling.targetCPUUtilizationPercentage` | CPU utilization target | `80` |
-| `autoscaling.targetMemoryUtilizationPercentage` | Memory utilization target | `2Gi` |
-| `volumes` | list of volumes. See values.yaml | [] |
+| `autoscaling.targetMemoryUtilizationPercentage` | Memory utilization target | `80` |
+| `extraVolumes` | Enable extra volumes to attach to pod | [] |
+| `extraVolumeMounts` | Enable extra volume mounts to attach to pod | [] |
 | `storage.keep` | Enable helm resource policy keep | `true` |
 | `storage.storageClass` | Storage Class name. If empty will use cluster default | "" |
 | `storage.metadata.size` | Size of pvc used for metadata | [] |
