@@ -97,10 +97,6 @@ Below are the main configurable parameters available in `values.yaml`.
 ## Next Steps of this chart
 
 - Configure HTTPRoute via Gateway API
-- Configure subpath deployment using `FR_BASE_PATH`
-- Publish the chart to a public Helm repository
-- Enable use of existing pvc for uploads
-- Configure probe
 
 ## License
 
