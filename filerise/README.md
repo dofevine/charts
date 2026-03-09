@@ -1,5 +1,8 @@
 # FileRise Helm Chart
 
+![version](https://img.shields.io/badge/version-0.1.2-blue)
+![version](https://img.shields.io/badge/appVersion-3.5.2-green)
+
 Unofficial Helm Chart for deploying FileRise on Kubernetes.
 
 FileRise is a self-hosted web file manager with WebDAV, sharing, and per-folder ACLs.
@@ -55,8 +58,9 @@ Below are the main configurable parameters available in `values.yaml`.
 | `autoscaling.minReplicas` | Minimum replicas | `1` |
 | `autoscaling.maxReplicas` | Maximum replicas | `10` |
 | `autoscaling.targetCPUUtilizationPercentage` | CPU utilization target | `80` |
-| `autoscaling.targetMemoryUtilizationPercentage` | Memory utilization target | `2Gi` |
-| `volumes` | list of volumes. See values.yaml | [] |
+| `autoscaling.targetMemoryUtilizationPercentage` | Memory utilization target | `80` |
+| `extraVolumes` | Enable extra volumes to attach to pod | [] |
+| `extraVolumeMounts` | Enable extra volume mounts to attach to pod | [] |
 | `storage.keep` | Enable helm resource policy keep | `true` |
 | `storage.storageClass` | Storage Class name. If empty will use cluster default | "" |
 | `storage.metadata.size` | Size of pvc used for metadata | [] |
@@ -96,10 +100,6 @@ Below are the main configurable parameters available in `values.yaml`.
 ## Next Steps of this chart
 
 - Configure HTTPRoute via Gateway API
-- Configure subpath deployment using `FR_BASE_PATH`
-- Publish the chart to a public Helm repository
-- Enable use of existing pvc for uploads
-- Configure probe
 
 ## License
 

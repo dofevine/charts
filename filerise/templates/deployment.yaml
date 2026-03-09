@@ -69,12 +69,27 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: uploads
+              mountPath: /var/www/uploads
+            - name: users
+              mountPath: /var/www/users
+            - name: metadata
+              mountPath: /var/www/metadata
+          {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
       volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: {{ default ( include "FileRise.uploadsPVCName" . ) .Values.storage.uploads.existingClaim  }}
+        - name: users
+          persistentVolumeClaim:
+            claimName: {{ include "FileRise.fullname" . }}-users
+        - name: metadata
+          persistentVolumeClaim:
+            claimName: {{ include "FileRise.fullname" . }}-metadata
+      {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
