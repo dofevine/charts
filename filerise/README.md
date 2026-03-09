@@ -1,5 +1,8 @@
 # FileRise Helm Chart
 
+![version](https://img.shields.io/badge/version-0.1.2-blue)
+![version](https://img.shields.io/badge/appVersion-3.5.2-green)
+
 Unofficial Helm Chart for deploying FileRise on Kubernetes.
 
 FileRise is a self-hosted web file manager with WebDAV, sharing, and per-folder ACLs.
