@@ -29,8 +29,8 @@ service:
   port: 8080
 
 ingress:
-  enabled: true
-  className: "kong"
+  enabled: false
+  className: ""
   annotations: {}
   hosts:
     - host: ""
