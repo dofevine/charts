@@ -97,7 +97,7 @@ storage:
   users:
     size: 1Gi
   uploads:
-    existingClaim: "teste-pvc"
+    existingClaim: ""
     size: 5Gi
 
 nodeSelector: {}
