@@ -1,0 +1,35 @@
+{{- if not .Values.storage.data.existingClaim -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  {{- if .Values.storage.keep }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end}}
+  labels:
+    {{- include "komga.labels" . | nindent 4 }}
+  name: {{ include "komga.dataPVCName" . }}
+spec:
+  {{- if .Values.storage.storageClass }}
+  storageClassName: {{ .Values.storage.storageClass }}
+  {{- end }}
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.storage.data.size }}
+{{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "komga.fullname" . }}-config
+  labels:
+    {{- include "komga.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.storage.storageClass }}
+  storageClassName: {{ .Values.storage.storageClass }}
+  {{- end }}
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.storage.config.size }}
