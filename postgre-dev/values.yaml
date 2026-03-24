@@ -1,8 +1,0 @@
-image:
-  repository: postgres
-  tag: 14.1-alpine
-  pullPolicy: IfNotPresent
-env:
-  POSTGRES_DB: teste
-  POSTGRES_PASSWORD: pass
-  POSTGRES_USER: user
