@@ -13,6 +13,12 @@ Generic chart used to deploy _almost_ any desired app.
 - Ingress (with the possibility to deploy multiple)
 - Service Account
 
+### Basic Installation
+
+```bash
+helm install generic oci://ghcr.io/dofevine/charts/generic
+```
+
 ## Requirements
 
 - [Helm](https://helm.sh/)

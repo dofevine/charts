@@ -9,3 +9,9 @@ Komga is a media server for your comics, mangas, BDs, magazines and eBooks.
 
 Official project repository:  
 <https://github.com/gotson/komga>
+
+## Basic Installation
+
+```bash
+helm install komga oci://ghcr.io/dofevine/charts/komga
+```
