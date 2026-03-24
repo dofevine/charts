@@ -1,0 +1,235 @@
+replicaCount: 1
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+command: {}
+args: {}
+
+image:
+  repository: ""
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: "container-registry-secrets"
+
+env:
+  # EXAMPLE: "123"
+  # EXAMPLE1: "123"
+  # EXAMPLE2: "123"
+  # EXAMPLE3: "123"
+
+
+podAnnotations: {}
+podLabels: {}
+
+serviceAccount:
+  create: false
+  automount: true
+  annotations: {}
+  name: ""
+
+podSecurityContext: {}
+  # runAsGroup: 3000
+  # fsGroup: 3000
+
+securityContext: {}
+  # readOnlyRootFilesystem: true
+  # allowPrivilegeEscalation: false
+  # runAsNonRoot: true
+  # runAsUser: 1010
+
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+initContainers:
+  enabled: false
+  command: ""
+  args: []
+  securityContext: {}
+
+  image:
+    repository: ""
+    tag: ""
+    pullPolicy: IfNotPresent
+
+  env: {}
+    # EXAMPLE: "123"
+    # EXAMPLE1: "123"
+    # EXAMPLE2: "123"
+    # EXAMPLE3: "123"
+  volumeMounts: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true
+
+# this block sets the port of the service that connects to the pod
+service:
+  annotations: {}
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+
+# this block sets the port of the pod that the service will connect to
+ports:
+  - name: http
+    containerPort: 80
+    protocol: TCP
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  ingressList:
+    - name: ""
+      annotations: {}
+      hosts: []
+        # - host: ""
+        #   paths:
+        #     - path: /api/api-name
+        #       pathType: Prefix
+      tls: []
+      #  - secretName: chart-example-tls
+      #    hosts:
+      #      - chart-example.local
+    - name: ""
+      annotations: {}
+        # konghq.com/strip-path: "true"
+        # konghq.com/plugins: key-auth-plugin
+      hosts: []
+        # - host: ""
+        #   paths:
+        #     - path: /api/api-name
+        #       pathType: Prefix
+      tls: []
+      #  - secretName: chart-example-tls
+      #    hosts:
+      #      - chart-example.local
+
+# this block is for setting any additional configuration needed to deploy the app
+# note that is also necessary to mount the configmap in the volume or the environment variable
+configmap:
+  enabled: false
+  data: {}
+
+# this block is used to connect the app to any vault supported by secrets store csi driver
+# note that is also necessary to mount the secret in the volume
+# more on: https://secrets-store-csi-driver.sigs.k8s.io/
+spc:
+  enabled: false
+  provider: ""
+  parameters: {}
+
+persistence:
+  enabled: false
+  storage: 500Mi
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+  # - name: "nodeName"
+tolerations:
+  # - key: "key1"
+  #   operator: "Equal"
+  #   value: "value1"
+  #   effect: "NoSchedule"
+  # - key: "key1"
+  #   operator: "Exists"
+  #   effect: "NoSchedule"
+
+affinity: {}
+  # schedules the pod where there are other pods with the label security and value s1 in a node with the label topology.kubernetes.io/zone
+  # podAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #   - labelSelector:
+  #       matchExpressions:
+  #       - key: security
+  #         operator: In
+  #         values:
+  #         - S1
+  #     topologyKey: topology.kubernetes.io/zone # topology key can be any node label consisting in a pair of key and value
+
+  # schedules the pod where there are not other pods with the label security and value s2 in a node with the label topology.kubernetes.io/zone
+  # podAntiAffinity:
+  #   preferredDuringSchedulingIgnoredDuringExecution:
+  #   - weight: 100
+  #     podAffinityTerm:
+  #       labelSelector:
+  #         matchExpressions:
+  #         - key: security
+  #           operator: In
+  #           values:
+  #           - S2
+  #       topologyKey: topology.kubernetes.io/zone
+
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution: # only schedules on a node with this label
+  #     nodeSelectorTerms:
+  #     - matchExpressions:
+  #       - key: disktype
+  #         operator: In
+  #         values:
+  #         - ssd
+
+  # nodeAffinity:
+  #     preferredDuringSchedulingIgnoredDuringExecution: # prefers to schedule on a node with this label
+  #     - weight: 1
+  #       preference:
+  #         matchExpressions:
+  #         - key: label-1
+  #           operator: In
+  #           values:
+  #           - key-1
+  #     - weight: 50
+  #       preference:
+  #         matchExpressions:
+  #         - key: label-2
+  #           operator: In
+  #           values:
+  #           - key-
+
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution: # pod schedules on a node that does not have the control plane label
+  #     nodeSelectorTerms:
+  #     - matchExpressions:
+  #       - key: node-role
+  #         operator: NotIn
+  #         values:
+  #         - control-plane
