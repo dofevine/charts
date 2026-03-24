@@ -24,7 +24,7 @@ Official project repository:
 ### Basic Installation
 
 ```bash
-helm install filerise ./filerise
+helm install filerise oci://ghcr.io/dofevine/charts/filerise
 ```
 
 ## Configuration
