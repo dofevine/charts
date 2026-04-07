@@ -1,6 +1,44 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ]
+  "regexManagers": [                                                                                                                                                                         
+    {                                                                                                                                                                                        
+      "description": "Update filerise image references in Chart.yaml",                                                                                                               
+      "fileMatch": ["^charts\\/filerise\\/Chart\\.yaml$"],                                                                                                                           
+      "matchStrings": [                                                                                                                                                                      
+        "appVersion:\\s+(?<currentValue>.*)"                                                                                                                                                 
+      ],                                                                                                                                                                                     
+      "depNameTemplate": "error311/filerise-docker",                                                                                                                                                 
+      "datasourceTemplate": "docker"                                                                                                                                                         
+    },                                                                                                                                                                                       
+    {                                                                                                                                                                                        
+      "description": "Update filerise image references in README",                                                                                                                   
+      "fileMatch": ["^charts\\/filerise\\/README\\.md$"],                                                                                                                            
+      "matchStrings": [                                                                                                                                                                      
+        "\\[AppVersion:\\s+(?<currentValue>.*?)\\]"                                                                                                                                          
+      ],                                                                                                                                                                                     
+      "depNameTemplate": "error311/filerise-docker",                                                                                                                                                 
+      "datasourceTemplate": "docker"                                                                                                                                                         
+    }                                                                                                                                                                                        
+  ],                                                                                                                                                                                         
+  "packageRules": [                                                                                                                                                                          
+    {                                                                                                                                                                                        
+      "matchManagers": ["helm-requirements", "helm-values", "regex"],                                                                                                                        
+      "postUpgradeTasks": {                                                                                                                                                                  
+        "commands": [                                                                                                                                                                        
+          "version=$(grep '^version:' {{{parentDir}}}/charts/filerise/Chart.yaml | awk '{print $2}')",                                                                               
+          "major=$(echo $version | cut -d. -f1)",                                                                                                                                            
+          "minor=$(echo $version | cut -d. -f2)",                                                                                                                                            
+          "patch=$(echo $version | cut -d. -f3)",                                                                                                                                            
+          "minor=$(expr $minor + 1)",                                                                                                                                                        
+          "echo XXX",                                                                                                                                                                        
+          "echo $version",                                                                                                                                                                   
+          "sed -i \"s/^version:.*/version: ${major}.${minor}.${patch}/g\" {{{parentDir}}}/charts/filerise/Chart.yaml"                                                                
+        ],                                                                                                                                                                                   
+        "fileFilters": ["**/Chart.yaml"],                                                                                                                                                    
+        "executionMode": "branch"                                                                                                                                                            
+      }                                                                                                                                                                                      
+    }                                                                                                                                                                                        
+  ],
+  "allowPostUpgradeCommandTemplating": true,
+  "allowedPostUpgradeCommands":        ["^.*"]
 }
