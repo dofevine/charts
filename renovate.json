@@ -57,6 +57,24 @@
       "depNameTemplate": "adminer-chart-version",
       "datasourceTemplate": "regex",
       "versioningTemplate": "increment"
+    },
+    {
+      "fileMatch": ["(^|/)cwa/Chart\\.yaml$"],
+      "matchStrings": [
+        "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "crocodilestick/calibre-web-automated",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["(^|/)cwa/Chart\\.yaml$"],
+      "matchStrings": [
+        "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "cwa-chart-version",
+      "datasourceTemplate": "regex",
+      "versioningTemplate": "increment"
     }
   ]
 }
