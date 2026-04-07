@@ -2,10 +2,14 @@
   "helm-values": {
     "enabled": true
   },
-  "postUpdateOptions": ["regexAll"],
+  "postUpdateOptions": [
+    "regexAll"
+  ],
   "regexManagers": [
     {
-      "fileMatch": ["(^|/)filerise/Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)filerise/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
       ],
@@ -14,7 +18,9 @@
       "versioningTemplate": "semver"
     },
     {
-      "fileMatch": ["(^|/)filerise/Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)filerise/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
       ],
@@ -23,7 +29,9 @@
       "versioningTemplate": "increment"
     },
     {
-      "fileMatch": ["(^|/)komga/Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)komga/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
       ],
@@ -32,7 +40,9 @@
       "versioningTemplate": "semver"
     },
     {
-      "fileMatch": ["(^|/)komga/Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)komga/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
       ],
@@ -41,7 +51,9 @@
       "versioningTemplate": "increment"
     },
     {
-      "fileMatch": ["(^|/)adminer/Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)adminer/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
       ],
@@ -50,7 +62,9 @@
       "versioningTemplate": "semver"
     },
     {
-      "fileMatch": ["(^|/)adminer/Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)adminer/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
       ],
@@ -59,7 +73,9 @@
       "versioningTemplate": "increment"
     },
     {
-      "fileMatch": ["(^|/)cwa/Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)cwa/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
       ],
@@ -68,13 +84,26 @@
       "versioningTemplate": "semver"
     },
     {
-      "fileMatch": ["(^|/)cwa/Chart\\.yaml$"],
+      "fileMatch": [
+        "(^|/)cwa/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
       ],
       "depNameTemplate": "cwa-chart-version",
       "datasourceTemplate": "regex",
       "versioningTemplate": "increment"
+    }
+  ],
+  "bumpVersions": [
+    {
+      "filePatterns": [
+        "{{cwa}}/Chart.{yaml,yml}"
+      ],
+      "matchStrings": [
+        "version:\\s(?<version>[^\\s]+)"
+      ],
+      "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
     }
   ]
 }
