@@ -98,7 +98,7 @@
   "bumpVersions": [
     {
       "filePatterns": [
-        "{{cwa}}/Chart.{yaml,yml}"
+        "/^({{#each (distinct (lookupArray upgrades \"packageFileDir\"))}}{{{.}}}{{#unless @last}}|{{/unless}}{{/each}})/Chart\\.(yaml|yml)$/"
       ],
       "matchStrings": [
         "version:\\s(?<version>[^\\s]+)"
