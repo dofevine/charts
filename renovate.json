@@ -8,7 +8,7 @@
       "matchStrings": [
         "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
       ],
-      "depNameTemplate": "minha-imagem",
+      "depNameTemplate": "error311/filerise-docker",
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver"
     }
