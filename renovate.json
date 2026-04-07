@@ -1,9 +1,4 @@
 {
-  "extends": [
-    "config:recommended",
-    "customManagers:helmChartYamlAppVersions",
-    "helpers:pinGitHubActionDigests"
-  ],
   "helm-values": {
     "enabled": true
   },
