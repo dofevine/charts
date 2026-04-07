@@ -4,6 +4,6 @@ description: A Helm chart for deploying Calibre Web Automated on Kubernetes
 
 type: application
 
-version: 0.1.0
+version: 0.1.1
 
 appVersion: "v4.0.6"
