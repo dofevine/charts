@@ -9,3 +9,7 @@ updates:
     directory: "/filerise" # Location of package manifestsweekly
     schedule:
       interval: "weekly"
+  - package-ecosystem: "helm" # See documentation for possible values
+    directory: "/filerise" # Location of package manifestsweekly
+    schedule:
+      interval: "weekly"
