@@ -11,6 +11,24 @@
       "depNameTemplate": "error311/filerise-docker",
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["(^|/)komga/Chart\\.yaml$"],
+      "matchStrings": [
+        "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "gotson/komga",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["(^|/)adminer/Chart\\.yaml$"],
+      "matchStrings": [
+        "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "adminer",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
     }
   ]
 }
