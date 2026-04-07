@@ -29,11 +29,11 @@ jobs:
       - name: Check changes
         id: changes
         run: |
-          CHARTS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+          CHARTS=$(git diff --name-only --diff-filter=ACM ${{ github.event.before }} ${{ github.sha }} \
             | grep -E 'Chart.yaml|values.yaml|templates/' \
             | xargs -I{} dirname {} \
             | sort -u || true)
-          if [ $CHARTS ]; then
+          if [ -n $CHARTS ]; then
             echo "Charts changed:"
             echo "$CHARTS"
           else
