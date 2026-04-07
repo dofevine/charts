@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  {{- if .Values.storage.keep }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end}}
+  name: {{ include "cwa.fullname" . }}-config
+  labels:
+    {{- include "cwa.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.storage.storageClass }}
+  storageClassName: {{ .Values.storage.storageClass }}
+  {{- end }}
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.storage.config.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  {{- if .Values.storage.keep }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end}}
+  name: {{ include "cwa.fullname" . }}-book-ingest
+  labels:
+    {{- include "cwa.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.storage.storageClass }}
+  storageClassName: {{ .Values.storage.storageClass }}
+  {{- end }}
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.storage.bookIngest.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  {{- if .Values.storage.keep }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end}}
+  name: {{ include "cwa.fullname" . }}-library
+  labels:
+    {{- include "cwa.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.storage.storageClass }}
+  storageClassName: {{ .Values.storage.storageClass }}
+  {{- end }}
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.storage.library.size }}
