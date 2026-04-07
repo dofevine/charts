@@ -1,5 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
   "regexManagers": [                                                                                                                                                                         
     {                                                                                                                                                                                        
       "description": "Update filerise image references in Chart.yaml",                                                                                                               
@@ -40,5 +43,5 @@
     }                                                                                                                                                                                        
   ],
   "allowPostUpgradeCommandTemplating": true,
-  "allowedPostUpgradeCommands":        ["^.*"]
+  "allowedPostUpgradeCommands": ["^.*"]
 }
