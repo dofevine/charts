@@ -1,4 +1,5 @@
 {
+  
   "helm-values": {
     "enabled": true
   },
@@ -19,17 +20,6 @@
     },
     {
       "fileMatch": [
-        "(^|/)filerise/Chart\\.yaml$"
-      ],
-      "matchStrings": [
-        "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
-      ],
-      "depNameTemplate": "filerise-chart-version",
-      "datasourceTemplate": "regex",
-      "versioningTemplate": "increment"
-    },
-    {
-      "fileMatch": [
         "(^|/)komga/Chart\\.yaml$"
       ],
       "matchStrings": [
@@ -38,17 +28,6 @@
       "depNameTemplate": "gotson/komga",
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver"
-    },
-    {
-      "fileMatch": [
-        "(^|/)komga/Chart\\.yaml$"
-      ],
-      "matchStrings": [
-        "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
-      ],
-      "depNameTemplate": "komga-chart-version",
-      "datasourceTemplate": "regex",
-      "versioningTemplate": "increment"
     },
     {
       "fileMatch": [
@@ -63,17 +42,6 @@
     },
     {
       "fileMatch": [
-        "(^|/)adminer/Chart\\.yaml$"
-      ],
-      "matchStrings": [
-        "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
-      ],
-      "depNameTemplate": "adminer-chart-version",
-      "datasourceTemplate": "regex",
-      "versioningTemplate": "increment"
-    },
-    {
-      "fileMatch": [
         "(^|/)cwa/Chart\\.yaml$"
       ],
       "matchStrings": [
@@ -82,28 +50,21 @@
       "depNameTemplate": "crocodilestick/calibre-web-automated",
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver"
-    },
-    {
-      "fileMatch": [
-        "(^|/)cwa/Chart\\.yaml$"
-      ],
-      "matchStrings": [
-        "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
-      ],
-      "depNameTemplate": "cwa-chart-version",
-      "datasourceTemplate": "regex",
-      "versioningTemplate": "increment"
     }
   ],
-  "bumpVersions": [
+  "packageRules": [
     {
-      "filePatterns": [
-        "/^({{#each (distinct (lookupArray upgrades \"packageFileDir\"))}}{{{.}}}{{#unless @last}}|{{/unless}}{{/each}})/Chart\\.(yaml|yml)$/"
-      ],
-      "matchStrings": [
-        "version:\\s(?<version>[^\\s]+)"
-      ],
-      "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+      "bumpVersions": [
+        {
+          "filePatterns": [
+            "/^({{#each (distinct (lookupArray upgrades \"packageFileDir\"))}}{{{.}}}{{#unless @last}}|{{/unless}}{{/each}})/Chart\\.(yaml|yml)$/"
+          ],
+          "matchStrings": [
+            "version:\\s(?<version>[^\\s]+)"
+          ],
+          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+        }
+      ]
     }
   ]
 }
