@@ -25,7 +25,24 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
+      - name: Check changes
+        id: changes
+        run: |
+          CHARTS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+            | grep -E 'Chart.yaml|values.yaml|templates/' \
+            | xargs -I{} dirname {} \
+            | sort -u || true)
+          if [ $CHARTS ]; then
+            echo "Charts changed:"
+            echo "$CHARTS"
+          else
+            echo "No changes detected"
+          fi
+          echo "charts<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHARTS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Validate chart version update
         if: steps.changes.outputs.charts != ''
         run: |
@@ -61,24 +78,7 @@ jobs:
             echo "One or more charts were modified without version update."
             exit 1
           fi
-      
-      - name: Check changes
-        id: changes
-        run: |
-          CHARTS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
-            | grep -E 'Chart.yaml|values.yaml|templates/' \
-            | xargs -I{} dirname {} \
-            | sort -u || true)
-          if [ $CHARTS ]; then
-            echo "Charts changed:"
-            echo "$CHARTS"
-          else
-            echo "No changes detected"
-          fi
-          echo "charts<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHARTS" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-      
+
       - name: Package
         if: steps.changes.outputs.charts != ''
         run: |
