@@ -31,7 +31,7 @@ jobs:
         run: |
           CHARTS=$(git diff --name-only --diff-filter=ACM ${{ github.event.before }} ${{ github.sha }} \
             | grep -E 'Chart.yaml|values.yaml|templates/' \
-            | xargs -I{} dirname {} \
+            | awk -F/ '{print $1}' \
             | sort -u || true)
           if [ $CHARTS ]; then
             echo "Charts changed:"
