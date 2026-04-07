@@ -1,7 +1,7 @@
 # Komga Helm Chart
 
-![version](https://img.shields.io/badge/version-0.1.0-blue)
-![version](https://img.shields.io/badge/appVersion-1.24.0-green)
+![version](https://img.shields.io/badge/version-0.1.1-blue)
+![version](https://img.shields.io/badge/appVersion-1.24.3-green)
 
 Unofficial Helm Chart for deploying Komga on Kubernetes.
 
