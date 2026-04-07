@@ -50,20 +50,5 @@
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver"
     }
-  ],
-  "packageRules": [
-    {
-      "bumpVersions": [
-        {
-          "filePatterns": [
-            "/^({{#each (distinct (lookupArray upgrades \"packageFileDir\"))}}{{{.}}}{{#unless @last}}|{{/unless}}{{/each}})/Chart\\.(yaml|yml)$/"
-          ],
-          "matchStrings": [
-            "version:\\s(?<version>[^\\s]+)"
-          ],
-          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
-        }
-      ]
-    }
   ]
 }
