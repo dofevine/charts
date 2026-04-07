@@ -33,7 +33,7 @@ jobs:
             | grep -E 'Chart.yaml|values.yaml|templates/' \
             | xargs -I{} dirname {} \
             | sort -u || true)
-          if [ -n $CHARTS ]; then
+          if [ $CHARTS ]; then
             echo "Charts changed:"
             echo "$CHARTS"
           else
