@@ -2,6 +2,7 @@
   "helm-values": {
     "enabled": true
   },
+  "postUpdateOptions": ["regexAll"],
   "regexManagers": [
     {
       "fileMatch": ["(^|/)filerise/Chart\\.yaml$"],
@@ -13,6 +14,15 @@
       "versioningTemplate": "semver"
     },
     {
+      "fileMatch": ["(^|/)filerise/Chart\\.yaml$"],
+      "matchStrings": [
+        "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "filerise-chart-version",
+      "datasourceTemplate": "regex",
+      "versioningTemplate": "increment"
+    },
+    {
       "fileMatch": ["(^|/)komga/Chart\\.yaml$"],
       "matchStrings": [
         "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
@@ -22,6 +32,15 @@
       "versioningTemplate": "semver"
     },
     {
+      "fileMatch": ["(^|/)komga/Chart\\.yaml$"],
+      "matchStrings": [
+        "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "komga-chart-version",
+      "datasourceTemplate": "regex",
+      "versioningTemplate": "increment"
+    },
+    {
       "fileMatch": ["(^|/)adminer/Chart\\.yaml$"],
       "matchStrings": [
         "appVersion:\\s*\"(?<currentValue>[^\"]+)\""
@@ -29,6 +48,15 @@
       "depNameTemplate": "adminer",
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["(^|/)adminer/Chart\\.yaml$"],
+      "matchStrings": [
+        "version:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "adminer-chart-version",
+      "datasourceTemplate": "regex",
+      "versioningTemplate": "increment"
     }
   ]
 }
