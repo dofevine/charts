@@ -25,7 +25,43 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Validate chart version update
+        if: steps.changes.outputs.charts != ''
+        run: |
+          FAILED=0
 
+          for chart in ${{ steps.changes.outputs.charts }}; do
+            if [ ! -f "$chart/Chart.yaml" ]; then
+              continue
+            fi
+
+            echo "Checking $chart"
+
+            OLD_VERSION=$(git show ${{ github.event.before }}:$chart/Chart.yaml 2>/dev/null | grep '^version:' | awk '{print $2}')
+            NEW_VERSION=$(grep '^version:' $chart/Chart.yaml | awk '{print $2}')
+
+            echo "Old version: $OLD_VERSION"
+            echo "New version: $NEW_VERSION"
+
+            if [ -z "$OLD_VERSION" ]; then
+              echo "New chart detected (no previous version)"
+              continue
+            fi
+
+            if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
+              echo "Version not updated for $chart"
+              FAILED=1
+            else
+              echo "Version updated for $chart"
+            fi
+          done
+
+          if [ $FAILED -eq 1 ]; then
+            echo "One or more charts were modified without version update."
+            exit 1
+          fi
+      
       - name: Check changes
         id: changes
         run: |
@@ -43,32 +79,6 @@ jobs:
           echo "$CHARTS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
       
-      - name: Auto bump chart version
-        if: steps.changes.outputs.charts != ''
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-
-          for chart in ${{ steps.changes.outputs.charts }}; do
-            if [ ! -f "$chart/Chart.yaml" ]; then
-              continue
-            fi
-
-            OLD_VERSION=$(git show ${{ github.event.before }}:$chart/Chart.yaml 2>/dev/null | grep '^version:' | awk '{print $2}')
-            NEW_VERSION=$(grep '^version:' $chart/Chart.yaml | awk '{print $2}')
-
-            if [ "$OLD_VERSION" = "$NEW_VERSION" ] || [ -z "$OLD_VERSION" ]; then
-              IFS='.' read -r MAJOR MINOR PATCH <<< "$NEW_VERSION"
-              PATCH=$((PATCH + 1))
-              BUMPED_VERSION="$MAJOR.$MINOR.$PATCH"
-              echo "Updating $chart version: $NEW_VERSION -> $BUMPED_VERSION"
-              sed -i "s/^version:.*/version: $BUMPED_VERSION/" $chart/Chart.yaml
-              git add $chart/Chart.yaml
-            fi
-          done
-
-          git commit -m "task: update chart version(s) automatically" || echo "No changes to commit"
-          git push origin main || echo "Push failed (maybe no changes)"
       - name: Package
         if: steps.changes.outputs.charts != ''
         run: |
