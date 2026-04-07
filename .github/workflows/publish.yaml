@@ -1,9 +1,10 @@
 name: Helm Package and Publish
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Update Chart.yaml and README"]
+    types:
+      - completed
 
 jobs:
   package-helm-chart:

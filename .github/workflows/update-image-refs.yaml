@@ -1,0 +1,48 @@
+name: Update Chart.yaml and README
+on:
+  push:
+    branches:
+      - main
+jobs:
+  package-helm-chart:
+    permissions:
+      contents: read
+      packages: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0  
+      - name: Update Chart.yaml
+        run: |
+          for chart in ./*; do
+            if [ -d "$chart" ] && [ -f "$chart/Chart.yaml" ]; then
+              TAG=$(sed -n 's/.*tag:[[:space:]]*"\(.*\)".*/\1/p' $chart/values.yaml)
+              if [ -z "$TAG" ]; then
+                echo "tag not found"
+                continue
+              fi
+              sed -i "s/^appVersion:.*/appVersion: \"$TAG\"/" $chart/Chart.yaml
+            fi
+          done
+      - name: Update README.md
+        run: |
+          for chart in ./*; do
+            if [ -d "$chart" ] && [ -f "$chart/Chart.yaml" ]; then
+              TAG=$(sed -n 's/.*tag:[[:space:]]*"\(.*\)".*/\1/p' $chart/values.yaml)
+              if [ -z "$TAG" ]; then
+                echo "tag not found"
+                continue
+              fi
+              sed -i -E "s/(appVersion-)[0-9]+\.[0-9]+\.[0-9]+(-green)/\1${TAG}\2/" "$chart/README.md"
+            fi
+          done
+      - name: Commit
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -am "Update Chart.yaml and README"
+          git push
