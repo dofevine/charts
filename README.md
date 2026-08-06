@@ -8,7 +8,8 @@ A collection of Helm charts for deploying applications on Kubernetes.
 | ------------ | --------------------------------------------------------------------- | ------- |
 | **generic**  | Generic Helm chart for deploying almost any containerized application | `0.1.0` |
 | **filerise** | Helm chart for deploying FileRise on Kubernetes                       | `0.1.6` |
-| **adminer**  | Helm chart for deploying Adminer on Kubernetes                        | `0.1.0` |
+| **adminer**  | Helm chart for deploying Adminer on Kubernetes                        | `0.2.0` |
+| **cwa**      | Helm chart for deploying Calibre Web Automated on Kubernetes          | `0.1.0` |
 
 ## Author
 
