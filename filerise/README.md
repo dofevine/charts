@@ -38,6 +38,8 @@ Below are the main configurable parameters available in `values.yaml`.
 | `image.tag` | Image tag | `v3.5.2` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `imagePullSecrets` | Secrets for private repository | `[]` |
+| `persistentToken.key` | Key for persistent tokens | "" |
+| `persistentToken.existingSecret` | Existing secret containing the key | "" |
 | `serviceAccount.create` | Create a ServiceAccount | `false` |
 | `serviceAccount.name` | Custom name | `""` |
 | `serviceAccount.automount` | Automount API credentials | `true` |
@@ -76,7 +78,6 @@ Below are the main configurable parameters available in `values.yaml`.
 | `TIMEZONE` | Application timezone | `America/New_York` |
 | `TOTAL_UPLOAD_SIZE` | Total upload size limit | `1G` |
 | `SECURE` | Enable secure mode | `false` |
-| `PERSISTENT_TOKENS_KEY` | Key for persistent tokens | `change_me` |
 | `SCAN_ON_START` | Scan files on startup | `true` |
 | `CHOWN_ON_START` | Adjust permissions on startup | `true` |
 | `HTTP_PORT` | Internal HTTP port | `8080` |
@@ -86,7 +87,13 @@ Below are the main configurable parameters available in `values.yaml`.
 
 ## Recommendations
 
-- Change `PERSISTENT_TOKENS_KEY`
+- Define `persistentToken.key` or `persistentToken.existingSecret`
+- If using an existing secret, it expects a unique key called `key` paired with it's value
+- Example on how to create the secret
+
+```bash
+kubectl create secret generic filerise-secret   --from-literal=key=change_me
+```
 
 - Define resource limits and requests
 - Use a reliable StorageClass
