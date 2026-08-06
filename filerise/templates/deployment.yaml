@@ -49,6 +49,16 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
+            {{- if .Values.persistentToken.key }}
+            - name: PERSISTENT_TOKENS_KEY
+              value: {{ .Values.persistentToken.key }}
+            {{- else }}
+            - name: PERSISTENT_TOKENS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.persistentToken.existingSecret }}
+                  key: key
+            {{- end}}
             {{- range $k, $v := .Values.env }}
             - name: {{ $k }}
               value: {{ tpl $v $ | quote }}
