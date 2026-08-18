@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: adminer
   pullPolicy: IfNotPresent
-  tag: "5.5.1"
+  tag: "6.0.1"
 
 imagePullSecrets: []
 
