@@ -5,7 +5,7 @@ nameOverride: ""
 image:
   repository: error311/filerise-docker
   pullPolicy: IfNotPresent
-  tag: "v3.26.0"
+  tag: "v3.27.0"
 
 imagePullSecrets: []
 
