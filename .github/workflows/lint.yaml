@@ -65,7 +65,11 @@ jobs:
               --exit-code 1 \
               "$chart"
           done
-
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: 'trivy-*.sarif'
       - name: No charts changed
         if: ${{ steps.changed.outputs.changed_charts == '' }}
         run: echo "Nenhum chart alterado no PR."
