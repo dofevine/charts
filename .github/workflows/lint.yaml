@@ -1,0 +1,69 @@
+name: Helm Linting
+
+on:
+  pull_request:
+    # paths:
+    #     - "."
+jobs:
+  lint-helm-chart:
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+      actions: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Identify changed charts
+        id: changed
+        run: |
+          FILES=$(git diff --name-only origin/${{ github.base_ref }})
+
+          CHANGED_CHARTS=""
+
+          for f in $FILES; do
+            chart="${f%%/*}"
+            if [ -f "$chart/Chart.yaml" ]; then
+              CHANGED_CHARTS="$CHANGED_CHARTS $chart"
+            fi
+          done
+
+          CHANGED_CHARTS=$(echo "$CHANGED_CHARTS" | sed '/^$/d' | sort -u)
+
+          echo "changed_charts=$CHANGED_CHARTS" >> $GITHUB_OUTPUT
+      
+      - name: Setup Helm
+        if: ${{ steps.changed.outputs.changed_charts != '' }}
+        uses: azure/setup-helm@v4
+
+      - name: Helm lint
+        if: ${{ steps.changed.outputs.changed_charts != '' }}
+        shell: bash
+        run: |
+          for chart in ${{ steps.changed.outputs.changed_charts }}; do
+            helm lint "$chart"
+          done
+      
+      - name: Install Trivy
+        if: ${{ steps.changed.outputs.changed_charts != '' }}
+        uses: aquasecurity/setup-trivy@e07451d2e059ed86c2870430ea286b3a9e0bf241
+        with:
+          version: v0.74.0
+
+      - name: Scan changed charts with Trivy
+        if: ${{ steps.changed.outputs.changed_charts != '' }}
+        shell: bash
+        run: |
+          for chart in ${{ steps.changed.outputs.changed_charts }}; do
+            trivy config \
+              --severity HIGH,CRITICAL \
+              --exit-code 1 \
+              "$chart"
+          done
+      - name: No charts changed
+        if: ${{ steps.changed.outputs.changed_charts == '' }}
+        run: echo "Nenhum chart alterado no PR."
