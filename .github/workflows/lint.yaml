@@ -52,10 +52,11 @@ jobs:
             helm lint "$chart"
           done
       
-
-      - name: Setup Trivy
+      - name: Install Trivy
         if: ${{ steps.changed.outputs.changed_charts != '' }}
-        uses: aquasecurity/setup-trivy@v0.2.4
+        uses: aquasecurity/setup-trivy@e07451d2e059ed86c2870430ea286b3a9e0bf241
+        with:
+          version: v0.74.0
 
       - name: Scan changed charts with Trivy
         if: ${{ steps.changed.outputs.changed_charts != '' }}
