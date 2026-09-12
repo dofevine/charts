@@ -2,8 +2,8 @@ name: Helm Linting
 
 on:
   pull_request:
-    paths:
-        - "."
+    # paths:
+    #     - "."
 jobs:
   lint-helm-chart:
     permissions:
