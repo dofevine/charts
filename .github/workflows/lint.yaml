@@ -26,7 +26,7 @@ jobs:
           # Filtra apenas charts
           CHANGED_CHARTS=""
           for f in $FILES; do
-            if [[ "$f" == charts/*/Chart.yaml ]]; then
+            if [[ "$f" == ./*/Chart.yaml ]]; then
               chart_dir=$(dirname "$f")
               CHANGED_CHARTS="$CHANGED_CHARTS $chart_dir"
             fi
