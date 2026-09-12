@@ -45,10 +45,6 @@ jobs:
         shell: bash
         run: |
           for chart in ${{ steps.changed.outputs.changed_charts }}; do
-            echo "========================================"
-            echo "Linting $chart"
-            echo "========================================"
-
             helm lint "$chart"
           done
       
@@ -63,12 +59,9 @@ jobs:
         shell: bash
         run: |
           for chart in ${{ steps.changed.outputs.changed_charts }}; do
-            echo "========================================"
-            echo "Scanning $chart"
-            echo "========================================"
-
             trivy config \
               --severity HIGH,CRITICAL \
+              --output "trivy-${chart}.sarif" \
               --exit-code 1 \
               "$chart"
           done
