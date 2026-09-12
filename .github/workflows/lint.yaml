@@ -33,8 +33,7 @@ jobs:
           done
 
           echo "changed_charts=$CHANGED_CHARTS" >> $GITHUB_OUTPUT
-      - name: Print changed charts
-        run: echo "Charts alterados: ${{ steps.changed.outputs.changed_charts }}"
+      
       
       
       - name: Run Trivy vulnerability scanner in IaC mode
