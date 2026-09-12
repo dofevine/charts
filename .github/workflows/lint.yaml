@@ -10,6 +10,7 @@ jobs:
       contents: read
       packages: write
       security-events: write
+      actions: write
     runs-on: ubuntu-latest
 
     steps:
@@ -22,46 +23,55 @@ jobs:
         run: |
           FILES=$(git diff --name-only origin/${{ github.base_ref }})
 
-          # Filtra apenas charts
           CHANGED_CHARTS=""
+
           for f in $FILES; do
-            echo "file: $f"
-            dir=$(dirname "$f")
-            if [ -f "$dir/Chart.yaml" ]; then
-              if [[ ! " $CHANGED_CHARTS " =~ " $dir " ]]; then
-                CHANGED_CHARTS="$CHANGED_CHARTS $dir"
-              fi
+            chart="${f%%/*}"
+            if [ -f "$chart/Chart.yaml" ]; then
+              CHANGED_CHARTS="$CHANGED_CHARTS $chart"
             fi
           done
 
+          CHANGED_CHARTS=$(echo "$CHANGED_CHARTS" | sed '/^$/d' | sort -u)
+
           echo "changed_charts=$CHANGED_CHARTS" >> $GITHUB_OUTPUT
       
-      
-      
-      - name: Run Trivy vulnerability scanner in IaC mode
+      - name: Setup Helm
         if: ${{ steps.changed.outputs.changed_charts != '' }}
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const charts = "${{ steps.changed.outputs.changed_charts }}".trim().split(/\s+/);
+        uses: azure/setup-helm@v4
 
-            for (const chart of charts) {
-              console.log(`Scanning ${chart}...`);
+      - name: Helm lint
+        if: ${{ steps.changed.outputs.changed_charts != '' }}
+        shell: bash
+        run: |
+          for chart in ${{ steps.changed.outputs.changed_charts }}; do
+            echo "========================================"
+            echo "Linting $chart"
+            echo "========================================"
 
-              await github.actions.createWorkflowDispatch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                workflow_id: "trivy-single.yml",
-                ref: context.ref,
-                inputs: { chart }
-              });
-            }
+            helm lint "$chart"
+          done
+      
 
-      # - name: Upload Trivy scan results to GitHub Security tab
-      #   if: ${{ steps.changed.outputs.changed_charts != '' }}
-      #   uses: github/codeql-action/upload-sarif@v4
-      #   with:
-      #     sarif_file: 'trivy-results.sarif'
+      - name: Setup Trivy
+        if: ${{ steps.changed.outputs.changed_charts != '' }}
+        uses: aquasecurity/setup-trivy@v0.2.4
+
+      - name: Scan changed charts with Trivy
+        if: ${{ steps.changed.outputs.changed_charts != '' }}
+        shell: bash
+        run: |
+          for chart in ${{ steps.changed.outputs.changed_charts }}; do
+            echo "========================================"
+            echo "Scanning $chart"
+            echo "========================================"
+
+            trivy config \
+              --severity HIGH,CRITICAL \
+              --exit-code 1 \
+              "$chart"
+          done
+
       - name: No charts changed
         if: ${{ steps.changed.outputs.changed_charts == '' }}
         run: echo "Nenhum chart alterado no PR."
