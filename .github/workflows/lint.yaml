@@ -20,7 +20,7 @@ jobs:
       - name: Identify changed charts
         id: changed
         run: |
-          FILES=$(git diff --name-only origin/main)
+          FILES=$(git diff --name-only origin/${{ github.base_ref }})
 
           # Filtra apenas charts
           CHANGED_CHARTS=""
